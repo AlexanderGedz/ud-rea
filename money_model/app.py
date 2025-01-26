@@ -1,4 +1,7 @@
 import mesa
+import matplotlib
+matplotlib.use('qtagg')
+import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import pandas as pd
@@ -36,5 +39,13 @@ class MoneyModel(mesa.Model):
         self.agents.shuffle_do("exchange")
 
 
-starter_model = MoneyModel(10)
-starter_model.step()
+model = MoneyModel(100)
+for _ in range(30):
+    model.step()
+
+agent_wealth = [a.wealth for a in model.agents]
+# Create a histogram with seaborn
+g = sns.histplot(agent_wealth, discrete=True)
+g.set(title="Wealth distribution", xlabel="Wealth", ylabel="number of agents");
+# The semicolon is just to avoid printing the object representation
+plt.show()
