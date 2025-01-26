@@ -14,6 +14,13 @@ class MoneyAgent(mesa.Agent):
     def say_hi(self):
         print(f"Hi, I am agent {self.unique_id} and I have {self.wealth} wealth.")
 
+    def exchange(self):
+        if self.wealth > 0:
+            other_agent = self.random.choice(self.model.agents)
+            if other_agent is not None:
+                other_agent.wealth += 1
+                self.wealth -= 1
+
 
 class MoneyModel(mesa.Model):
     """A model with some number of agents."""
@@ -25,8 +32,8 @@ class MoneyModel(mesa.Model):
 
     def step(self):
         """Advance the model by one step."""
-        
-        self.agents.shuffle_do("say_hi")
+
+        self.agents.shuffle_do("exchange")
 
 
 starter_model = MoneyModel(10)
